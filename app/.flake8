@@ -1,2 +1,6 @@
 [flake8]
 exclude = migrations, __pycache__, manage.py, settings.py
+max-line-length = 90
+max-complexity = 10
+ignore = E203, E266, E501, W503
+select = B,C,E,F,W,T4,B9
