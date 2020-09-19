@@ -4,8 +4,8 @@ init:
 generate_module:
 		docker-compose down && docker-compose run app sh -c "python manage.py startapp core" --remove-orphans
 
-test:
-		docker-compose down && docker-compose run app sh -c "python manage.py test && flake8" --remove-orphans
+purge:
+		docker-compose down && docker container prune && docker system prune
 
 build:
 		docker-compose down && docker-compose build
@@ -13,5 +13,14 @@ build:
 migrate:
 		docker-compose down && docker-compose run app sh -c "python manage.py makemigrations core"
 
-purge:
-		docker-compose down && docker container prune && docker system prune
+test:
+		docker-compose down && docker-compose run app sh -c "python manage.py test && flake8" --remove-orphans
+
+lint:
+		pre-commit run -a
+
+commit:
+		git add . && git commit -a 
+
+push:
+		git push -u origin master 
