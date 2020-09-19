@@ -1,5 +1,4 @@
 FROM python:3.8-alpine
-LABEL image backend-api 
 
 ENV PYTHON_UNBUFFERED 1
 
