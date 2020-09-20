@@ -23,9 +23,9 @@ init:
 gen-core:
 		docker-compose down && docker-compose run app sh -c "python manage.py startapp core" --remove-orphans
 
-# Generate Django Module
-# @Params: NAME=module-name
-gen-module:
+# Generate Django Model
+# @Params: NAME=name
+gen-model:
 		docker-compose run --rm app sh -c "python manage.py startapp ${NAME}"
 
 # Unit Tests
