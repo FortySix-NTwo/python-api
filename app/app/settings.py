@@ -129,9 +129,16 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
+# Static files (CSS, JavaScript)
+# Multimedia files (images, video)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = "/static/"
+
+STATIC_ROOT = "/volume/data/static"
+
+MEDIA_URL = "/media/"
+
+MEDIA_ROOT = "/volume/data/media"
 
 AUTH_USER_MODEL = "core.User"
