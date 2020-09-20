@@ -1,19 +1,16 @@
 {
   "python.linting.flake8Enabled": true,
-  "python.linting.flake8Args": [ 
-    "--max-line-length=120",
-    "--max-complexity=10",
-    "--ignore=E402,F841,F401,E302,E305,E303,E203,E266,E501,W503,B950,F821",
-    "--exclude=migrations,__pycache__,manage.py,settings.py",
-    "--select=B,C,E,F,W,T4,B9",
-
-  ],
   "cSpell.words": [
     "ASGI",
+    "conv",
+    "dpage",
     "isort",
+    "pgadmin",
+    "psycopg",
     "repos",
     "runserver",
-    "sqlite"
+    "sqlite",
+    "yduj"
   ],
   "python.pythonPath": "/usr/local/bin/python3"
 }
