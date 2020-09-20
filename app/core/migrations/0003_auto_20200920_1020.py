@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             name="groups",
             field=models.ManyToManyField(
                 blank=True,
-                help_text="The groups this user belongs to. A user will get all permissions granted to each in group",
+                help_text="A user will get all permissions granted",
                 related_name="user_set",
                 related_query_name="user",
                 to="auth.Group",

@@ -1,6 +1,5 @@
 FROM python:3.7-alpine
 ENV PYTHONUNBUFFERED 1
-COPY ./.env.docker /.env.docker
 COPY ./requirements.txt /requirements.txt
 RUN apk update && apk upgrade --no-cache
 RUN apk add --update --no-cache postgresql-client

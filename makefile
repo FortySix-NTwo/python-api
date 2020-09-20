@@ -20,7 +20,7 @@ lint:
 		pre-commit run -a
 
 commit:
-		git add . && git commit -a
+		pre-commit run -a && git add . && git commit -a
 
 push:
 		git push -u origin master 
