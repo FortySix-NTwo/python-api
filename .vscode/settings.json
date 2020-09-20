@@ -10,7 +10,6 @@
     "repos",
     "runserver",
     "sqlite",
-    "yduj"
   ],
   "python.pythonPath": "/usr/local/bin/python3"
 }

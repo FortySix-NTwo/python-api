@@ -5,6 +5,7 @@ from django.db import models
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         """Creates & Save a new User"""
+
         if not email:
             raise ValueError("Users must include a valid email address")
         user = self.model(email=self.normalize_email(email), **extra_fields)
@@ -15,6 +16,7 @@ class UserManager(BaseUserManager):
 
     def create_superuser(self, email, password):
         """Creates Administrative User"""
+
         user = self.create_user(email, password)
         user.is_staff = True
         user.is_superuser = True
