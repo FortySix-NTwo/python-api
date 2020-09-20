@@ -6,6 +6,7 @@ from rest_framework.test import APIClient
 
 CREATE_USER_URL = reverse("user:create")
 AUTH_TOKEN_URL = reverse("user:token")
+ME_URL = reverse("user:me")
 
 
 def create_user(**params):
@@ -14,7 +15,7 @@ def create_user(**params):
 
 
 class UserApiTest(TestCase):
-    """Test the users API non authenticated"""
+    """Test the users API for non authenticated users"""
 
     def setUp(self):
         self.client = APIClient()
@@ -27,9 +28,7 @@ class UserApiTest(TestCase):
             "name": "test user",
         }
         res = self.client.post(CREATE_USER_URL, payload)
-
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-
         user = get_user_model().objects.get(**res.data)
 
         self.assertTrue(user.check_password(payload["password"]))
@@ -90,3 +89,46 @@ class UserApiTest(TestCase):
 
         self.assertNotIn("token", res.data)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_fetch_unauthorized_user(self):
+        """Test that unauthorized users are restricted"""
+        res = self.client.get(ME_URL)
+
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+
+class AuthenticatedUserApitest(TestCase):
+    """Test the users API for authenticated users"""
+
+    def setUp(self):
+        self.user = create_user(
+            email="test@which.com",
+            password="passTheTest",
+            name="test user",
+        )
+
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+
+    def test_retire_profile_success(self):
+        """Test retrival of authenticated user"""
+        res = self.client.get(ME_URL)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data, {"name": self.user.name, "email": self.user.email})
+
+    def test_post_to_me_not_allowed(self):
+        """Test that POST requests are not allowed on ME_URL endpoint"""
+        res = self.client.post(ME_URL, {})
+
+        self.assertEqual(res.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_update_user_profile(self):
+        """Test that PUT requests are successful on ME_URL endpoint"""
+        payload = {"name": "updated name", "password": "updatedPassword"}
+        res = self.client.patch(ME_URL, payload)
+        self.user.refresh_from_db()
+
+        self.assertEqual(self.user.name, payload["name"])
+        self.assertTrue(self.user.check_password(payload["password"]))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
