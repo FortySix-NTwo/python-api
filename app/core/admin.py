@@ -1,5 +1,4 @@
 from core import models
-from core.models import AvatarImage
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
@@ -10,7 +9,16 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {"fields": ("email", "password")}),
         ("Personal Info", {"fields": ("name",)}),
-        ("Permissions", {"fields": ("is_active", "is_staff", "is_superuser")}),
+        (
+            "Permissions",
+            {
+                "fields": (
+                    "is_active",
+                    "is_staff",
+                    "is_superuser",
+                )
+            },
+        ),
         ("Important dates", {"fields": ("last_login",)}),
     )
     add_fieldsets = (
@@ -25,4 +33,3 @@ class UserAdmin(BaseUserAdmin):
 
 
 admin.site.register(models.User, UserAdmin)
-admin.site.register(AvatarImage)

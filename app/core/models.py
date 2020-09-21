@@ -1,16 +1,5 @@
-import os
-import uuid
-
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
-
-
-def user_image_file_path(instance, filename):
-    """Generate file path for user image upload"""
-    extension = filename.split(".")[-1]
-    filename = f"{uuid.uuid4()}.{extension}"
-
-    return os.path.join("uploads/user/", filename)
 
 
 class UserManager(BaseUserManager):
@@ -39,11 +28,10 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     """Custom User Model Supporting Email instead of Username"""
 
-    avatar = models.ImageField(default="default.jpg", upload_to=user_image_file_path)
-
     name = models.CharField(max_length=255)
     user = models.CharField(max_length=255)
     email = models.EmailField(max_length=255, unique=True)
+
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
@@ -52,10 +40,3 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
     USERNAME_FIELD = "email"
-
-
-class AvatarImage(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.user.name} avatar"

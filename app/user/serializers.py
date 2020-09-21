@@ -8,8 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ("email", "password", "name", "user", "avatar")
-
+        fields = ("email", "password", "name", "user")
         extra_kwargs = {"password": {"write_only": True, "min_length": 8}}
 
     def create(self, validated_data):
@@ -18,16 +17,11 @@ class UserSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         """Overrides update method in-order to update user profile"""
-        avatar = validated_data.get("avatar")
         password = validated_data.pop("password", None)
         user = super().update(instance, validated_data)
 
         if password:
             user.set_password(password)
-            user.save()
-
-        if avatar:
-            user.set_avatar(avatar)
             user.save()
 
         return user
