@@ -39,7 +39,8 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     """Custom User Model Supporting Email instead of Username"""
 
-    avatar = models.ImageField(null=True, upload_to=user_image_file_path)
+    avatar = models.ImageField(default="default.jpg", upload_to=user_image_file_path)
+
     name = models.CharField(max_length=255)
     user = models.CharField(max_length=255)
     email = models.EmailField(max_length=255, unique=True)
@@ -51,3 +52,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
     USERNAME_FIELD = "email"
+
+
+class AvatarImage(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user.name} avatar"
