@@ -26,6 +26,7 @@ class UserApiTest(TestCase):
             "email": "test@which.com",
             "password": "passTheTest",
             "name": "test user",
+            "user": "testerson",
         }
         res = self.client.post(CREATE_USER_URL, payload)
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
@@ -37,9 +38,10 @@ class UserApiTest(TestCase):
     def test_user_exists(self):
         """Test Creation of already existing user"""
         payload = {
-            "email": "test@where.com",
+            "email": "test@which.com",
             "password": "passTheTest",
             "name": "test user",
+            "user": "testerson",
         }
         create_user(**payload)
         res = self.client.post(CREATE_USER_URL, payload)
@@ -105,6 +107,7 @@ class AuthenticatedUserApitest(TestCase):
             email="test@which.com",
             password="passTheTest",
             name="test user",
+            user="testerson",
         )
 
         self.client = APIClient()
@@ -115,7 +118,14 @@ class AuthenticatedUserApitest(TestCase):
         res = self.client.get(ME_URL)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(res.data, {"name": self.user.name, "email": self.user.email})
+        self.assertEqual(
+            res.data,
+            {
+                "email": self.user.email,
+                "name": self.user.name,
+                "user": self.user.user,
+            },
+        )
 
     def test_post_to_me_not_allowed(self):
         """Test that POST requests are not allowed on ME_URL endpoint"""
